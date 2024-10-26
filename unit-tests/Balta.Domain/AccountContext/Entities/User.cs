@@ -24,11 +24,11 @@ public sealed class User : Entity, IAggregate
     {
         var email = Email.ShouldCreate(emailAddress, dateTimeProvider);
         var password = Password.ShouldCreate(plainTextPassword);
-        
+
         return new User(Guid.NewGuid(), email, password);
     }
-    
-    public static User ShouldCreate(Email email, Password password) 
+
+    public static User ShouldCreate(Email email, Password password)
         => new(Guid.NewGuid(), email, password);
 
     #endregion
@@ -46,9 +46,14 @@ public sealed class User : Entity, IAggregate
 
     public void ShouldAuthenticate()
     {
+        if (LockOut != null)
+        {
+            return;
+        }
+
         AccessFailedCount++;
 
-        if (AccessFailedCount > Configuration.Api.MaxAccessFailedCount)
+        if (AccessFailedCount >= Configuration.Api.MaxAccessFailedCount)
             LockOut = LockOut.ShouldCreate(Configuration.Api.DefaultLockOutTimeInMinutes, UserErrors.LockedOutByLoginAttemptsMessage);
     }
 
