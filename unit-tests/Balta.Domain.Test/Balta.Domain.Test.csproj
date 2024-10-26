@@ -25,4 +25,16 @@
       <ProjectReference Include="..\Balta.Domain\Balta.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="AccountContext\Entities\User.cs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="AccountContext\Entities\User.cs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="AccountContext\Entities\User.cs\**" />
+    </ItemGroup>
+
 </Project>

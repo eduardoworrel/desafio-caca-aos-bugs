@@ -46,9 +46,12 @@ public sealed class User : Entity, IAggregate
 
     public void ShouldAuthenticate()
     {
+        if (LockOut != null)
+            return;
+        
         AccessFailedCount++;
 
-        if (AccessFailedCount > Configuration.Api.MaxAccessFailedCount)
+        if (AccessFailedCount >= Configuration.Api.MaxAccessFailedCount)
             LockOut = LockOut.ShouldCreate(Configuration.Api.DefaultLockOutTimeInMinutes, UserErrors.LockedOutByLoginAttemptsMessage);
     }
 
