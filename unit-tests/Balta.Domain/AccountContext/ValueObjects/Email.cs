@@ -54,13 +54,15 @@ public partial record Email : ValueObject
 
     public string Address { get; }
     public string Hash { get; }
+
+    private readonly IDateTimeProvider? _dateTimeProvider;
     public VerificationCode VerificationCode { get; }
 
     #endregion
 
     #region Methods
 
-    public void ShouldVerify(string verificationCode) => VerificationCode.ShouldVerify(verificationCode);
+    public void ShouldVerify(string verificationCode) => VerificationCode.ShouldVerify(verificationCode, _dateTimeProvider);
 
     #endregion
 
