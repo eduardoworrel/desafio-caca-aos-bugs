@@ -42,7 +42,7 @@ public class VerificationCode
 
     #region Methods
 
-    public void ShouldVerify(string code)
+    public void ShouldVerify(string code, IDateTimeProvider dateTimeProvider)
     {
         if (string.IsNullOrEmpty(code) || string.IsNullOrWhiteSpace(code))
             throw new InvalidVerificationCodeException();
@@ -50,7 +50,7 @@ public class VerificationCode
         if (code.Length != MinLength)
             throw new InvalidVerificationCodeException();
 
-        if (ExpiresAtUtc <= DateTime.UtcNow)
+        if (ExpiresAtUtc <= dateTimeProvider.UtcNow)
             throw new InvalidVerificationCodeException();
 
         if (!IsPending)
@@ -59,9 +59,11 @@ public class VerificationCode
         if (Code != code)
             throw new InvalidVerificationCodeException();
 
-        VerifiedAtUtc = DateTime.UtcNow;
+        VerifiedAtUtc = dateTimeProvider.UtcNow;
         ExpiresAtUtc = null;
     }
+
+    
 
     #endregion
 
